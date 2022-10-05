@@ -18,7 +18,7 @@
 #define TIMER_CREATED_AND_ACTIVE_AMSK   0xC000
 #define TIMER_TIMEOUT_MASK              0x3FFF
 
-static timer_t TimerTable[MAX_TIMERS];
+static stimer_t TimerTable[MAX_TIMERS];
 
 void Timer_Init(void)
 {

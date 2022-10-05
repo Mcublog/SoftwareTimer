@@ -25,7 +25,7 @@ typedef struct
 {
     uint16_t TimeoutTick; //!< Timeout tick counter. NB: MSB is 1 if the timer is active, 0 otherwise */
     timer_handler_t TimerHandler; //!< Timeout function handler */
-} timer_t;
+} stimer_t;
 
 /**
  * @fn void Timer_Init(void)
