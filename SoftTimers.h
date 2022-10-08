@@ -1,18 +1,7 @@
-/**
-* @file		SoftTimers.h
-* @brief	Contains all macro definitions and function prototypes
-* 		support for handling software timers.
-*
-* @version	0.1
-* @date		22 February 2013
-* @author	Mauro Gamba
-*
-***********************************************************************/
-
 #ifndef SOFTTIMERS_H
 #define SOFTTIMERS_H
 
-#include "common_type.h"
+#include <stdint.h>
 
 #define ERR_TIMER_NOT_AVAILABLE     0xFF
 
@@ -21,17 +10,28 @@
  */
 typedef void (*timer_handler_t)(uint8_t);
 
+// Pointers to enable/disable IRQ functions.
+typedef void (*timer_enable_irq_t)(void);
+typedef void (*timer_disable_irq_t)(void);
+
 typedef struct
 {
     uint16_t TimeoutTick; //!< Timeout tick counter. NB: MSB is 1 if the timer is active, 0 otherwise */
     timer_handler_t TimerHandler; //!< Timeout function handler */
 } stimer_t;
 
+typedef struct
+{
+    timer_enable_irq_t enable_irq;
+    timer_disable_irq_t disable_irq;
+} stimer_init_ctx_t;
+
 /**
- * @fn void Timer_Init(void)
  * @brief Initialize software timer module data structures.
+ *
+ * @param init_ctx, pointer to structure with timers context
  */
-void Timer_Init(void);
+void Timer_Init(stimer_init_ctx_t *init_ctx);
 
 /**
  * @fn uint8_t Timer_Create(uint16_t timeout, func_pnt_t FunctionPointer)

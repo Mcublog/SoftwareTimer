@@ -1,15 +1,16 @@
 /**
-* @file		SoftTimers.c
-* @brief	Contains all functions support for handling software timers.
-*
-* @version	0.1
-* @date		22 February 2013
-* @author	Mauro Gamba
-*
-***********************************************************************/
-
+ * @file SoftTimers.c
+ * @author Viacheslav (slava.k@ks2corp.com)
+ * @brief Contains all macro definitions and function prototypes
+ * support for handling software timers.
+ *
+ * @version 0.1
+ * @date 2022-10-08
+ *
+ * @copyright Vicaheslav@mcublog.ru Copyright (c) 2022
+ *
+ */
 #include <string.h>
-#include "timer.h"
 #include "SoftTimers.h"
 
 #define MAX_TIMERS      5
@@ -19,10 +20,12 @@
 #define TIMER_TIMEOUT_MASK              0x3FFF
 
 static stimer_t TimerTable[MAX_TIMERS];
+static stimer_init_ctx_t TimerInitCtx = {0};
 
-void Timer_Init(void)
+void Timer_Init(stimer_init_ctx_t *init_ctx)
 {
     memset(&TimerTable, 0, sizeof(TimerTable));
+    memcpy(&TimerInitCtx, init_ctx, sizeof(stimer_init_ctx_t));
 }
 
 /**
@@ -47,12 +50,12 @@ uint8_t Timer_Create(timer_handler_t FunctionPointer)
     else
     {
         /* Disable timer interrupt */
-        DIS_TIMER_INT_RX;
+        TimerInitCtx.disable_irq();
         /* Initialize timer */
         TimerTable[idx].TimerHandler = FunctionPointer;
         TimerTable[idx].TimeoutTick = TIMER_CREATED_MASK;
         /* Enable timer interrupt */
-        EN_TIMER_INT_RX;
+        TimerInitCtx.enable_irq();
     }
     return idx;
 }
@@ -81,11 +84,11 @@ void Timer_Start(uint8_t timerId, uint16_t timeout)
     if (timerId < MAX_TIMERS)
     {
         /* Disable timer interrupt */
-        DIS_TIMER_INT_RX;
+        TimerInitCtx.disable_irq();
         /* Set the timer active flag */
         TimerTable[timerId].TimeoutTick |= (TIMER_ACTIVE_MASK + (timeout & TIMER_TIMEOUT_MASK));
         /* Enable timer interrupt */
-        EN_TIMER_INT_RX;
+        TimerInitCtx.enable_irq();
     }
 }
 
@@ -99,11 +102,11 @@ void Timer_Stop(uint8_t timerId)
     if (timerId < MAX_TIMERS)
     {
         /* Disable timer interrupt */
-        DIS_TIMER_INT_RX;
+        TimerInitCtx.disable_irq();
         /* Reset the timer active flag */
         TimerTable[timerId].TimeoutTick &= ~TIMER_ACTIVE_MASK;
         /* Enable timer interrupt */
-        EN_TIMER_INT_RX;
+        TimerInitCtx.enable_irq();
     }
 }
 
