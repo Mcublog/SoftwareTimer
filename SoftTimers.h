@@ -1,6 +1,8 @@
 #ifndef SOFTTIMERS_H
 #define SOFTTIMERS_H
 
+
+
 #include <stdint.h>
 
 #define ERR_TIMER_NOT_AVAILABLE     (0xFF)
@@ -25,6 +27,11 @@ typedef struct
     timer_enable_irq_t enable_irq;
     timer_disable_irq_t disable_irq;
 } stimer_init_ctx_t;
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 /**
  * @brief Initialize software timer module data structures.
@@ -68,5 +75,9 @@ void Timer_Stop(uint8_t timerId);
  * @brief Update active timers. Note that it's called in interrupt contest.
  */
 void Timer_Update(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // SOFTTIMERS_H
