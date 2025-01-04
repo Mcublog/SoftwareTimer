@@ -13,16 +13,16 @@
 #include <string.h>
 #include "SoftTimers.h"
 
-#define MAX_TIMERS      5
-#define TIMER_ACTIVE_MASK               0x8000
-#define TIMER_CREATED_MASK              0x4000
-#define TIMER_CREATED_AND_ACTIVE_AMSK   0xC000
-#define TIMER_TIMEOUT_MASK              0x3FFF
+#define MAX_TIMERS                      (5)
+#define TIMER_ACTIVE_MASK               (0x8000)
+#define TIMER_CREATED_MASK              (0x4000)
+#define TIMER_CREATED_AND_ACTIVE_AMSK   (0xC000)
+#define TIMER_TIMEOUT_MASK              (0x3FFF)
 
-static stimer_t TimerTable[MAX_TIMERS];
+static stimer_t TimerTable[MAX_TIMERS] = {0};
 static stimer_init_ctx_t TimerInitCtx = {0};
 
-void Timer_Init(stimer_init_ctx_t *init_ctx)
+void Timer_Init(const stimer_init_ctx_t *init_ctx)
 {
     memset(&TimerTable, 0, sizeof(TimerTable));
     memcpy(&TimerInitCtx, init_ctx, sizeof(stimer_init_ctx_t));
