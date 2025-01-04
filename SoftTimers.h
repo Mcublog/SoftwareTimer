@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define ERR_TIMER_NOT_AVAILABLE     0xFF
+#define ERR_TIMER_NOT_AVAILABLE     (0xFF)
 
 /**
  * @group Typedef definition.
@@ -31,7 +31,7 @@ typedef struct
  *
  * @param init_ctx, pointer to structure with timers context
  */
-void Timer_Init(stimer_init_ctx_t *init_ctx);
+void Timer_Init(const stimer_init_ctx_t *init_ctx);
 
 /**
  * @fn uint8_t Timer_Create(uint16_t timeout, func_pnt_t FunctionPointer)
