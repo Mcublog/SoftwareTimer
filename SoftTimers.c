@@ -13,7 +13,10 @@
 #include <string.h>
 #include "SoftTimers.h"
 
+#ifndef MAX_TIMERS
 #define MAX_TIMERS                      (5)
+#endif
+
 #define TIMER_ACTIVE_MASK               (0x8000)
 #define TIMER_CREATED_MASK              (0x4000)
 #define TIMER_CREATED_AND_ACTIVE_AMSK   (0xC000)
